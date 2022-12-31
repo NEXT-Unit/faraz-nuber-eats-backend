@@ -2,15 +2,15 @@ import { Field, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
 export class Restaurant{
-    @Field(is=>String)
+    @Field(type=>String)
     name:string;
     
-    @Field(is=>Boolean)
+    @Field(type=>Boolean)
     isVegan:boolean;
 
-    @Field(is => String)
+    @Field(type => String)
     address: string;
     
-    @Field(is => String)
+    @Field(type => String)
     ownerName: string;
 }
