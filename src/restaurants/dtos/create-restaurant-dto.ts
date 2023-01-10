@@ -1,5 +1,4 @@
-import { ArgsType, Field, InputType, OmitType } from '@nestjs/graphql';
-import { IsString, IsBoolean } from 'class-validator';
+import { InputType, OmitType } from '@nestjs/graphql';
 import { Restaurant } from '../entities/restaurants.entity';
 
 @InputType()
