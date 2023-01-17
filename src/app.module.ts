@@ -1,4 +1,4 @@
-import { ApolloDriver } from '@nestjs/apollo';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { RestaurantsModule } from './restaurants/restaurants.module';
@@ -9,6 +9,8 @@ import { Restaurant } from './restaurants/entities/restaurants.entity';
 import { UsersModule } from './users/users.module';
 import { CommonModule } from './common/common.module';
 import { User } from './users/entities/user.entity';
+import { JwtModule } from './jwt/jwt.module';
+import * as jwt from 'jsonwebtoken';
 
 @Module({
   imports: [
@@ -23,6 +25,7 @@ import { User } from './users/entities/user.entity';
         DB_USERNAME: Joi.string().required(),
         DB_PASSWORD: Joi.string().required(),
         DB_NAME: Joi.string().required(),
+        SECRET_KEY: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRoot({
@@ -36,12 +39,13 @@ import { User } from './users/entities/user.entity';
       logging: true,
       entities: [User],
     }),
-    GraphQLModule.forRoot({
+    GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
     }),
     UsersModule,
     CommonModule,
+    JwtModule.forRoot(),
   ],
   controllers: [],
   providers: [],
