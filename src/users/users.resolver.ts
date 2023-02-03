@@ -93,6 +93,21 @@ export class UsersResolver {
       };
     }
   }
+
   @Mutation((returns) => VerifyEmailOuput)
-  verifyEmail(@Args('input') VerifyEmailInput: VerifyEmailInput) {}
+  async verifyEmail(
+    @Args('input') { code }: VerifyEmailInput,
+  ): Promise<VerifyEmailOuput> {
+    try {
+      await this.UsersService.verifyEmail(code);
+      return {
+        ok: true,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error,
+      };
+    }
+  }
 }
