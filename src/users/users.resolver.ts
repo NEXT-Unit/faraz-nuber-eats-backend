@@ -1,5 +1,5 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AuthUser } from 'src/auth/auth-user.decorators';
 import { AuthGuard } from 'src/auth/auth.guard';
 import {
@@ -52,9 +52,10 @@ export class UsersResolver {
   }
 
   @Mutation((returns) => VerifyEmailOuput)
-  verifyEmail(
+  async verifyEmail(
     @Args('input') { code }: VerifyEmailInput,
   ): Promise<VerifyEmailOuput> {
-    return this.UsersService.verifyEmail(code);
+    const { ok, error } = await this.UsersService.verifyEmail(code);
+    return { ok, error };
   }
 }
