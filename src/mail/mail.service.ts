@@ -1,8 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CONFIG_OPTIONS } from 'src/common/common.constants';
 import { MailModuleOptions } from './mail.interfaces';
-import got from 'got';
 import * as FormData from 'form-data';
+import got from 'got';
+import nodefetch from 'node-fetch';
 
 @Injectable()
 export class MailService {
@@ -17,7 +18,8 @@ export class MailService {
     form.append('to', 'farazzkamali80@gmail.com');
     form.append('subject', subject);
     form.append('content', content);
-    const response = await got(
+
+    /*     const response = await got(
       `https://api.mailgun.net/v3/${this.options.domain}/messages`,
       {
         method: 'POST',
@@ -28,7 +30,7 @@ export class MailService {
         },
         body: form,
       },
-    );
-    console.log(response.body);
+    ); */
+    // console.log(response.body);
   }
 }
