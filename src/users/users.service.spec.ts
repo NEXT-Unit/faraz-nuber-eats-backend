@@ -65,11 +65,29 @@ describe('UserService', () => {
     it('create a new user', async () => {
       usersRepository.findOne.mockResolvedValue(undefined);
       usersRepository.create.mockReturnValue(creatAccountArgs);
-      await service.createAccount(creatAccountArgs);
+      usersRepository.save.mockResolvedValue(creatAccountArgs);
+      VerificationsRepository.create.mockReturnValue({
+        user: creatAccountArgs,
+      });
+      const result = await service.createAccount(creatAccountArgs);
+
       expect(usersRepository.create).toHaveBeenCalledTimes(1);
       expect(usersRepository.create).toHaveBeenCalledWith(creatAccountArgs);
+
       expect(usersRepository.save).toHaveBeenCalledTimes(1);
       expect(usersRepository.save).toHaveBeenCalledWith(creatAccountArgs);
+
+      expect(VerificationsRepository.create).toHaveBeenCalledTimes(1);
+      expect(VerificationsRepository.create).toHaveBeenCalledWith({
+        user: creatAccountArgs,
+      });
+
+      expect(VerificationsRepository.save).toHaveBeenCalledTimes(1);
+      expect(VerificationsRepository.save).toHaveBeenCalledWith({
+        user: creatAccountArgs,
+      });
+
+      expect(result).toEqual({ ok: true });
     });
   });
 
