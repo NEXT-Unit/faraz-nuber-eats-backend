@@ -46,9 +46,9 @@ export class UsersService {
     try {
       const user = await this.users.findOne({
         where: { email },
-        select: ['password'],
+        select: ['id', 'password'],
       });
-      if (!User) {
+      if (!user) {
         return {
           ok: false,
           error: 'User does not exist',
