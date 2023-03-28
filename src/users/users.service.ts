@@ -82,6 +82,7 @@ export class UsersService {
     }
   }
 
+  // ##################
   async editProfile(
     userId: number,
     { email, password }: EditProfileInput,
@@ -92,8 +93,11 @@ export class UsersService {
       if (email) {
         user.email = email;
         user.verified = false;
-        await this.verifications.save(this.verifications.create({ user }));
+        const verification = await this.verifications.save(
+          this.verifications.create({ user: { id: user.id } }),
+        );
       }
+
       if (password) {
         user.password = password;
       }
@@ -103,7 +107,7 @@ export class UsersService {
       return { ok: false, error: 'Could not update profile' };
     }
   }
-
+  // ##############################################
   async verifyEmail(code: string): Promise<VerifyEmailOuput> {
     try {
       const verification = await this.verifications.findOne({
