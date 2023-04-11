@@ -49,8 +49,10 @@ import { Category } from './restaurants/entities/category.entity';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       synchronize: process.env.NODE_ENV !== 'prod',
-      logging:
-        process.env.NODE_ENV !== 'prod' && process.env.NODE_ENV !== 'test',
+      logging: false,
+      // process.env.NODE_ENV !== 'prod' &&
+      // process.env.NODE_ENV !== 'test' &&
+      // process.env.NODE_ENV !== 'dev',
       entities: [User, Verification, Restaurant, Category],
       // type: 'postgres',
       // host: process.env.DB_HOST,
