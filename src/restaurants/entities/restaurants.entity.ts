@@ -5,6 +5,7 @@ import {
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
+  RelationId,
 } from 'typeorm';
 import { IsString, IsBoolean, IsOptional } from 'class-validator';
 import { CoreEntity } from 'src/common/entities/core.entity';
@@ -46,4 +47,7 @@ export class Restaurant extends CoreEntity {
     onDelete: 'CASCADE',
   })
   owner: User;
+
+  @RelationId((restaurant: Restaurant) => restaurant.owner)
+  ownerId: number;
 }
