@@ -21,6 +21,8 @@ import { AuthModule } from './auth/auth.module';
 import { Verification } from './users/entities/verification.entity';
 import { MailModule } from './mail/mail.module';
 import { Category } from './restaurants/entities/category.entity';
+import { TypeOrmExModule } from './database/typeorm-ex.module';
+import { CategoryRepository } from './restaurants/repositories/category.repository';
 
 @Module({
   imports: [
@@ -64,11 +66,24 @@ import { Category } from './restaurants/entities/category.entity';
       // logging: true,
       // entities: [User, Verification],
     }),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+    TypeOrmExModule.forCustomRepository([CategoryRepository]),
+    GraphQLModule.forRoot({
+      playground: process.env.NODE_ENV !== 'production',
+      installSubscriptionHandlers: true,
       driver: ApolloDriver,
       autoSchemaFile: true,
-      context: ({ req }) => ({ user: req['user'] }),
+      context: ({ req, connection }) => {
+        const TOKEN_KEY = 'x-jwt';
+        return {
+          token: req ? req.headers[TOKEN_KEY] : connection.context[TOKEN_KEY],
+        };
+      },
     }),
+    // GraphQLModule.forRoot<ApolloDriverConfig>({
+    //   driver: ApolloDriver,
+    //   autoSchemaFile: true,
+    //   context: ({ req }) => ({ user: req['user'] }),
+    // }),
     UsersModule,
     CommonModule,
     JwtModule.forRoot({
