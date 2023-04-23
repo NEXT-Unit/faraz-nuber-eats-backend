@@ -7,6 +7,9 @@ import nodefetch from 'node-fetch';
 
 @Injectable()
 export class MailService {
+  sendVerificationEmail(sendVerificationEmail: any) {
+    throw new Error('Method not implemented.');
+  }
   constructor(
     @Inject(CONFIG_OPTIONS) private readonly options: MailModuleOptions,
   ) {

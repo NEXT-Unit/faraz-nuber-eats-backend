@@ -18,7 +18,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json "
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
@@ -28,21 +28,29 @@
     "@nestjs/core": "^9.0.0",
     "@nestjs/graphql": "^10.1.7",
     "@nestjs/platform-express": "^9.0.0",
-    "@nestjs/typeorm": "^9.0.1",
+    "@nestjs/typeorm": "^9.0.0-next.2",
     "@types/bcrypt": "^5.0.0",
     "@types/hapi__joi": "^17.1.9",
+    "@types/jsonwebtoken": "^9.0.1",
     "apollo-server-express": "^3.11.1",
     "bcrypt": "^5.1.0",
     "class-transformer": "^0.5.1",
-    "class-validator": "^0.13.2",
+    "class-validator": "^0.14.0",
     "cross-env": "^7.0.3",
+    "fix-esm": "^1.0.1",
+    "form-data": "^4.0.0",
+    "got": "^11.8.3",
     "graphql": "^16.6.0",
     "joi": "^17.7.0",
+    "jsonwebtoken": "^9.0.0",
+    "mysql2": "^3.2.0",
+    "node-fetch": "^3.3.0",
     "pg": "^8.8.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "typeorm": "^0.3.11"
+    "typeorm": "^0.3.15",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
@@ -68,6 +76,9 @@
     "typescript": "^4.7.4"
   },
   "jest": {
+    "moduleNameMapper": {
+      "^src/(.*)$": "<rootDir>/$1"
+    },
     "moduleFileExtensions": [
       "js",
       "json",
@@ -82,6 +93,11 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "coveragePathIgonrePatterns": [
+      "node_modules",
+      ".entity.ts",
+      ".constants.ts"
+    ]
   }
 }
