@@ -30,11 +30,6 @@ export class Restaurant extends CoreEntity {
   @IsString()
   address: string;
 
-  @Field((type) => String, { nullable: true })
-  @Column({ default: 'ff' })
-  @IsString()
-  ownerName?: string;
-
   @Field((type) => Category, { nullable: true })
   @ManyToOne((type) => Category, (category) => category.restaurants, {
     nullable: true,
