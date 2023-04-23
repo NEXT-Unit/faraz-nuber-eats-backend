@@ -146,28 +146,4 @@ export class RestaurantService {
   }
 }
 
-// async createRestaurant(
-//   owner: User,
-//   createRestaurantInput: CreateRestaurantInput,
-// ): Promise<CreateRestaurantOutput> {
-//   try {
-//     const newRestaurant = this.restaurants.create(createRestaurantInput);
-//     newRestaurant.owner = owner;
-//     const category = await this.categories.getOrCreate(
-//       createRestaurantInput.categoryName,
-//     );
-//     newRestaurant.category = category;
-//     await this.restaurants.save(newRestaurant);
-//     return {
-//       ok: true,
-//       restaurantId: newRestaurant.id,
-//     };
-//   } catch {
-//     return {
-//       ok: false,
-//       error: 'Could not create restaurant',
-//     };
-//   }
-// }
-
 //@InjectRepository(Category) // private readonly categories: Repository<Category>,
