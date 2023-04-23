@@ -113,7 +113,7 @@ export class RestaurantService {
   }
   async deleteRestaurant(
     owner: User,
-    // instead of {restaurantId}, deleteResrtaurantInput could use
+    // instead of {restaurantId}, deleteResrtaurantInput could usecd
     { restaurantId }: DeleteRestaurantInput,
   ): Promise<DeleteRestaurantOutput> {
     try {
