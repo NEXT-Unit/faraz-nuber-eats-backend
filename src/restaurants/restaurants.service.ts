@@ -17,6 +17,7 @@ import {
   DeleteRestaurantInput,
   DeleteRestaurantOutput,
 } from './dtos/delete-restaurant.dto';
+import { AllCategoriesOutPut } from './dtos/all-categories-dto';
 
 @Injectable()
 export class RestaurantService {
@@ -144,6 +145,19 @@ export class RestaurantService {
       };
     }
   }
+  async allCategories(): Promise<AllCategoriesOutPut> {
+    try {
+      const categories = await this.categories.find();
+      return {
+        ok: true,
+        categories,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error: 'Could not load categories',
+      };
+    }
+  }
 }
-
 //@InjectRepository(Category) // private readonly categories: Repository<Category>,

@@ -18,6 +18,8 @@ import {
   DeleteRestaurantInput,
   DeleteRestaurantOutput,
 } from './dtos/delete-restaurant.dto';
+import { Category } from './entities/category.entity';
+import { AllCategoriesOutPut } from './dtos/all-categories-dto';
 
 @Resolver(() => Restaurant)
 export class RestaurantResolver {
@@ -54,5 +56,15 @@ export class RestaurantResolver {
       owner,
       deleteRestaurantInput,
     );
+  }
+}
+
+@Resolver((of) => Category)
+export class CategoryResolver {
+  constructor(private readonly restauranService: RestaurantService) {}
+
+  @Query((type) => AllCategoriesOutPut)
+  allCategories(): Promise<AllCategoriesOutPut> {
+    return this.restauranService.allCategories();
   }
 }
