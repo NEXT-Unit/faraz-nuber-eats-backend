@@ -1,6 +1,7 @@
 import {
   Field,
   InputType,
+  Int,
   ObjectType,
   OmitType,
   PickType,
@@ -17,6 +18,22 @@ export class CreateRestaurantInput extends PickType(Restaurant, [
   @Field((type) => String)
   categoryName: string;
 }
+// #my dto
+// @InputType()
+// export class CreateRestaurantInput extends PickType(Restaurant, [
+//   'name',
+//   'coverImage',
+//   'address',
+//   'ownerId',
+// ]) {
+//   @Field((type) => String)
+//   categoryName: string;
+// }
 
+// @ObjectType()
+// export class CreateRestaurantOutput extends MutationOutput {}
 @ObjectType()
-export class CreateRestaurantOutPut extends MutationOutput {}
+export class CreateRestaurantOutput extends MutationOutput {
+  @Field((type) => Int)
+  restaurantId?: number;
+}
