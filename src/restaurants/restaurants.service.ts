@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Equal, FindOptionsWhere, Repository } from 'typeorm';
 import {
   CreateRestaurantInput,
   CreateRestaurantOutput,
@@ -18,6 +18,7 @@ import {
   DeleteRestaurantOutput,
 } from './dtos/delete-restaurant.dto';
 import { AllCategoriesOutPut } from './dtos/all-categories-dto';
+import { CategoryInput, CategoryOutput } from './dtos/category.dto';
 
 @Injectable()
 export class RestaurantService {
@@ -159,5 +160,54 @@ export class RestaurantService {
       };
     }
   }
+
+  async countRestaurants(category: Category): Promise<number> {
+    const { id } = category;
+    const count = await this.restaurants
+      .createQueryBuilder('restaurant')
+      .where('restaurant.categoryId = :id', { id })
+      .getCount();
+    return count;
+  }
+
+  async findCategoryBySlug({
+    page,
+    slug,
+  }: CategoryInput): Promise<CategoryOutput> {
+    try {
+      const category = await this.categories.findOne({
+        where: { slug },
+      });
+      if (!category) {
+        return {
+          ok: false,
+          error: 'Category not found',
+        };
+      }
+      const [restaurants, totalResults] = await Promise.all([
+        this.restaurants
+          .createQueryBuilder('restaurant')
+          .where('restaurant.categoryId = :categoryId', {
+            categoryId: category.id,
+          })
+          .take(25)
+          .skip((page - 1) * 25)
+          .getMany(),
+        this.countRestaurants(category),
+      ]);
+      category.restaurants = restaurants;
+      return {
+        ok: true,
+        category,
+        totalPages: Math.ceil(totalResults / 25),
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error: 'could not load category',
+      };
+    }
+  }
 }
+
 //@InjectRepository(Category) // private readonly categories: Repository<Category>,
