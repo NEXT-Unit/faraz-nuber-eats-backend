@@ -10,6 +10,7 @@ import { Restaurant } from './restaurants.entity';
 export class Category extends CoreEntity {
   @Field((type) => String)
   @Column({ unique: true })
+  @IsString()
   name: string;
 
   @Field((type) => String, { nullable: true })
@@ -22,7 +23,7 @@ export class Category extends CoreEntity {
   @IsString()
   slug: string;
 
-  @Field((type) => [Restaurant])
+  @Field((type) => [Restaurant], { nullable: true })
   @OneToMany((type) => Restaurant, (restaurant) => restaurant.category)
   restaurants: Restaurant[];
 }
