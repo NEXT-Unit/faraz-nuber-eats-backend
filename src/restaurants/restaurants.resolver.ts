@@ -29,6 +29,7 @@ import {
 import { Category } from './entities/category.entity';
 import { AllCategoriesOutPut } from './dtos/all-categories-dto';
 import { CategoryInput, CategoryOutput } from './dtos/category.dto';
+import { RestaurantInput, RestaurantOutput } from './dtos/restaurants.dto';
 
 @Resolver(() => Restaurant)
 export class RestaurantResolver {
@@ -65,6 +66,12 @@ export class RestaurantResolver {
       owner,
       deleteRestaurantInput,
     );
+  }
+  @Query((returns) => RestaurantOutput)
+  restaurants(
+    @Args('input') restaurantInput: RestaurantInput,
+  ): Promise<RestaurantOutput> {
+    return this.restaurantService.allRestaurants(restaurantInput);
   }
 }
 
