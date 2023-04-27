@@ -18,6 +18,7 @@ import { User } from 'src/users/entities/user.entity';
 export class Restaurant extends CoreEntity {
   @Field((type) => String)
   @Column()
+  @IsString()
   name: string;
 
   @Field((type) => String)
@@ -34,6 +35,7 @@ export class Restaurant extends CoreEntity {
   @ManyToOne((type) => Category, (category) => category.restaurants, {
     nullable: true,
     onDelete: 'SET NULL',
+    eager: true,
   })
   category: Category;
 
