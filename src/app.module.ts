@@ -23,6 +23,7 @@ import { MailModule } from './mail/mail.module';
 import { Category } from './restaurants/entities/category.entity';
 import { TypeOrmExModule } from './database/typeorm-ex.module';
 import { CategoryRepository } from './restaurants/repositories/category.repository';
+import { Dish } from './restaurants/entities/dish.entity';
 
 @Module({
   imports: [
@@ -55,7 +56,7 @@ import { CategoryRepository } from './restaurants/repositories/category.reposito
       // process.env.NODE_ENV !== 'prod' &&
       // process.env.NODE_ENV !== 'test' &&
       // process.env.NODE_ENV !== 'dev',
-      entities: [User, Verification, Restaurant, Category],
+      entities: [User, Verification, Restaurant, Category, Dish],
       // type: 'postgres',
       // host: process.env.DB_HOST,
       // port: +process.env.DB_PORT,
