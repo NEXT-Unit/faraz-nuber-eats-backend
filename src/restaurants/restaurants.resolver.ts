@@ -37,11 +37,14 @@ import {
 } from './dtos/search-restaurants.dto';
 import { Dish } from './entities/dish.entity';
 import { CreateDishInput, CreateDishOutput } from './dtos/create-dish.dto';
-import { EditDishInput, EditDishOutput } from 'src/users/dtos/edit-dish.dto';
+import {
+  EditDishInput,
+  EditDishOutput,
+} from 'src/restaurants/dtos/edit-dish.dto';
 import {
   DeleteDishInput,
   DeleteDishOutput,
-} from 'src/users/dtos/delete-dish.dto';
+} from 'src/restaurants/dtos/delete-dish.dto';
 
 @Resolver(() => Restaurant)
 export class RestaurantResolver {
