@@ -24,8 +24,8 @@ import { Category } from './restaurants/entities/category.entity';
 import { TypeOrmExModule } from './database/typeorm-ex.module';
 import { CategoryRepository } from './restaurants/repositories/category.repository';
 import { Dish } from './restaurants/entities/dish.entity';
-import { OrderModule } from './oders/orders.module';
-import { Order } from './oders/entities/order.entity';
+import { OrderModule } from './orders/orders.module';
+import { Order } from './orders/entities/order.entity';
 
 @Module({
   imports: [

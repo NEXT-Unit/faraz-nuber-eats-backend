@@ -16,7 +16,7 @@ import {
   isBoolean,
 } from 'class-validator';
 import { Restaurant } from 'src/restaurants/entities/restaurants.entity';
-import { Order } from 'src/oders/entities/order.entity';
+import { Order } from 'src/orders/entities/order.entity';
 
 export enum UserRole {
   Client = 'Client',
