@@ -17,6 +17,7 @@ import { IsEnum, IsNumber } from 'class-validator';
 export enum OrderStatus {
   Pending = 'Pending',
   Cooking = 'Cooking',
+  Cooked = 'Cooked',
   PickedType = 'PickedType',
   Deliverd = 'Deliverd',
 }
