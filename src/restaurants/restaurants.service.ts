@@ -317,9 +317,7 @@ export class RestaurantService {
           error: 'You can not do that',
         };
       }
-      const dish = await this.dishes.save(
-        this.dishes.create({ ...createDishInput, restaurant }),
-      );
+      const dish = await this.dishes.save(this.dishes.create({ ...createDishInput, restaurant }))
       return {
         ok: true,
       };
