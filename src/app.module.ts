@@ -83,11 +83,6 @@ import { OrderItem } from './orders/entities/order-item.entity';
         };
       },
     }),
-    // GraphQLModule.forRoot<ApolloDriverConfig>({
-    //   driver: ApolloDriver,
-    //   autoSchemaFile: true,
-    //   context: ({ req }) => ({ user: req['user'] }),
-    // }),
     OrderModule,
     UsersModule,
     CommonModule,
@@ -105,11 +100,4 @@ import { OrderItem } from './orders/entities/order-item.entity';
   controllers: [],
   providers: [],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(JwtMiddleware).forRoutes({
-      path: '/graphql',
-      method: RequestMethod.ALL,
-    });
-  }
-}
+export class AppModule {}
