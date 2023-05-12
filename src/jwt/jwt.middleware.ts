@@ -2,6 +2,8 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from './jwt.service';
+import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
+import { GqlExecutionContext } from '@nestjs/graphql';
 
 @Injectable()
 export class JwtMiddleware implements NestMiddleware {
