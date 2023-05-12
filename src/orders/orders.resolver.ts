@@ -1,22 +1,27 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { Order } from './entities/order.entity';
 import { OrderService } from './orders.service';
 import { AuthUser } from 'src/auth/auth-user.decorators';
-import { User } from 'src/users/entities/user.entity';
+import { User, UserRole } from 'src/users/entities/user.entity';
 import { CreateOrderInput, CreateOrderOutput } from './dtos/create-order.dto';
 import { Role } from 'src/auth/role.decorator';
 import { GetOrdersInput, GetOrdersOutput } from './dtos/get-orders.dto';
 import { GetOrderInput, GetOrderOutput } from './dtos/get-order.dto';
 import { EditOrderInput, EditOrderOutput } from './dtos/edit-order.dto';
+import { Inject, SetMetadata } from '@nestjs/common';
+import { NEW_COOKED_ORDER, NEW_ORDER_UPDATE, NEW_PENDING_ORDER, PUB_SUB } from 'src/common/common.constants';
+import { PubSub } from 'graphql-subscriptions';
+import { OrderUpdatesInput } from './dtos/order-update.dto';
+import { TakeOrderInput, TakeOrderOutput } from './dtos/take-order.dto';
 
 @Resolver((of) => Order)
 export class OrderResolver {
-  constructor(private readonly orderService: OrderService) {}
+  constructor(private readonly orderService: OrderService,@Inject(PUB_SUB) private readonly pubSub: PubSub,) {}
 
   @Mutation((returns) => CreateOrderOutput)
   @Role(['Client'])
   createOrder(
-    @AuthUser() customer: User,
+    @AuthUser() customer: User, 
     @Args('input') createOrderInput: CreateOrderInput,
   ): Promise<CreateOrderOutput> {
     return this.orderService.createOrder(customer, createOrderInput);
@@ -45,4 +50,48 @@ export class OrderResolver {
   async editOrder(@AuthUser() user:User, @Args('input') editOrderInput:EditOrderInput): Promise<EditOrderOutput>{
     return this.orderService.editOrder(user, editOrderInput)
   }
-}
+
+    @Subscription(returns => Order, {
+    filter:({pendingOrders:{ownerId}}, _, {user})=>{
+      console.log(ownerId, ownerId)
+      return ownerId === user.id
+    },
+    resolve:({pendingOrders:{order}})=>order
+  })
+  
+  pendingOrders() {
+    SetMetadata('roles', ['Owner'])(this.pendingOrders)
+    return this.pubSub.asyncIterator(NEW_PENDING_ORDER);
+  }
+
+  @Subscription(returns => Order)
+  cookedOrders(){
+    SetMetadata('roles', ['Delivery'])(this.cookedOrders)
+    return this.pubSub.asyncIterator(NEW_COOKED_ORDER)
+  }
+
+  @Subscription(resturns=>Order, {
+    filter:(
+      {orderUpdates:order}:{orderUpdates:Order}, 
+      {input:{id}}:{input:OrderUpdatesInput}, 
+      {user}:{user:User}
+      )=>{
+
+      return true 
+      //return order.id === input.id
+    },
+  })
+  orderUpdates(@Args('input') orderUpdatesInput:OrderUpdatesInput){
+    SetMetadata('roles', ['Any'])(this.orderUpdates)
+    return this.pubSub.asyncIterator(NEW_ORDER_UPDATE)
+  }
+
+  @Mutation(returns=>TakeOrderOutput)
+  @Role(['Delivery'])
+  takeOrder(@AuthUser() driver:User
+  ,@Args('input') takeOrderInput:TakeOrderInput
+  ): Promise<TakeOrderOutput>{
+    return this.orderService.takeOrder(driver, takeOrderInput)
+  }
+} 
+ 
