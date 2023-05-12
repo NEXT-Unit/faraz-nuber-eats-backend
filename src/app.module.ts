@@ -1,9 +1,6 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import {
-  MiddlewareConsumer,
   Module,
-  NestModule,
-  RequestMethod,
 } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { RestaurantsModule } from './restaurants/restaurants.module';
@@ -41,10 +38,6 @@ import { OrderItem } from './orders/entities/order-item.entity';
         DB_USERNAME: Joi.string().required(),
         DB_PASSWORD: Joi.string().required(),
         DB_NAME: Joi.string().required(),
-        // PRIVATE_KEY: Joi.string().required(),
-        // MAILGUN_API_KEY: Joi.string().required(),
-        // MAILGUN_DOMAIN: Joi.string().required(),
-        // MAILGUN_FROM_EMAIL: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRoot({
@@ -56,19 +49,7 @@ import { OrderItem } from './orders/entities/order-item.entity';
       database: process.env.DB_NAME,
       synchronize: process.env.NODE_ENV !== 'prod',
       logging: false,
-      // process.env.NODE_ENV !== 'prod' &&
-      // process.env.NODE_ENV !== 'test' &&
-      // process.env.NODE_ENV !== 'dev',
       entities: [User, Verification, Restaurant, Category, Dish, Order, OrderItem],
-      // type: 'postgres',
-      // host: process.env.DB_HOST,
-      // port: +process.env.DB_PORT,
-      // username: process.env.DB_USERNAME,
-      // password: process.env.DB_PASSWORD,
-      // database: process.env.DB_NAME,
-      // synchronize: process.env.NODE_ENV !== 'prod',
-      // logging: true,
-      // entities: [User, Verification],
     }),
     TypeOrmExModule.forCustomRepository([CategoryRepository]),
     GraphQLModule.forRoot({
